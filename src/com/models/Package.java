@@ -11,6 +11,25 @@ public class Package {
 
 	private int parentID;
 
+	public Package() {
+		this.packageID = 0;
+		this.name = "";
+		this.techReflection = "";
+		this.mngReflection = "";
+		this.bzReflection = "";
+		this.parentID = 0;
+	}
+
+	public Package(int packageID, String name, String techReflection, String mngReflection, String bzReflection,
+			int parentID) {
+		this.packageID = packageID;
+		this.name = name;
+		this.techReflection = techReflection;
+		this.mngReflection = mngReflection;
+		this.bzReflection = bzReflection;
+		this.parentID = parentID;
+	}
+
 	public int getPackageID() {
 		return packageID;
 	}
