@@ -52,7 +52,43 @@ public class CMServices {
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
 
-	
+	@POST
+	@Path("/addProject")
+	public String addProject(@FormParam("name") String name, @FormParam("tech_ref") String tech,
+			@FormParam("mng_ref") String mng, @FormParam("bz_ref") String bz, @FormParam("parentID") int parentID) {
+
+		Project pj = new Project(0, name, tech, mng, bz, parentID);
+
+		ProjectDAO dao = new ProjectDAO();
+		int id = dao.addProject(pj);
+
+		return JSONBuilder.convertIDToJSON(id).toJSONString();
+	}
+
+	@POST
+	@Path("/updateProject")
+	public String updateProject(@FormParam("id") int id, @FormParam("name") String name,
+			@FormParam("tech_ref") String tech, @FormParam("mng_ref") String mng, @FormParam("bz_ref") String bz,
+			@FormParam("parentID") int parentID) {
+
+		Project pj = new Project(id, name, tech, mng, bz, parentID);
+
+		ProjectDAO dao = new ProjectDAO();
+		String state = dao.updateProject(pj);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
+	@POST
+	@Path("/deleteProject")
+	public String deleteProject(@FormParam("id") int id) {
+
+		ProjectDAO dao = new ProjectDAO();
+		String state = dao.deleteProject(id);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
 	@GET
 	@Path("/")
 	public String addProduct() {
