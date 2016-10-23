@@ -6,6 +6,18 @@ public class Person {
 	private String name;
 	private String role;
 
+	public Person() {
+		this.personID = 0;
+		this.name = "";
+		this.role = "";
+	}
+
+	public Person(int personID, String name, String role) {
+		this.personID = personID;
+		this.name = name;
+		this.role = role;
+	}
+
 	public int getPersonID() {
 		return personID;
 	}

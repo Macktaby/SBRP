@@ -89,6 +89,41 @@ public class CMServices {
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
 
+	@POST
+	@Path("/addPerson")
+	public String addPerson(@FormParam("name") String name, @FormParam("role") String role) {
+
+		Person person = new Person(0, name, role);
+
+		PersonDAO dao = new PersonDAO();
+		int id = dao.addPerson(person);
+
+		return JSONBuilder.convertIDToJSON(id).toJSONString();
+	}
+
+	@POST
+	@Path("/updatePerson")
+	public String updatePerson(@FormParam("id") int id, @FormParam("name") String name,
+			@FormParam("role") String role) {
+
+		Person person = new Person(id, name, role);
+
+		PersonDAO dao = new PersonDAO();
+		String state = dao.updatePerson(person);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
+	@POST
+	@Path("/deletePerson")
+	public String deletePerson(@FormParam("id") int id) {
+
+		PersonDAO dao = new PersonDAO();
+		String state = dao.deletePerson(id);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
 	@GET
 	@Path("/")
 	public String addProduct() {
