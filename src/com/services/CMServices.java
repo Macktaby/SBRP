@@ -126,7 +126,7 @@ public class CMServices {
 
 	@GET
 	@Path("/")
-	public String addProduct() {
+	public String getJSON() {
 		return "{\"state\":\"HELLO\"}";
 	}
 

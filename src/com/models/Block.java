@@ -6,6 +6,24 @@ public class Block {
 	private String name;
 	private Project project;
 
+	public Block() {
+		this.blockID = 0;
+		this.name = "";
+		this.project = new Project();
+	}
+
+	public Block(int blockID, String name, int projectID) {
+		this.blockID = blockID;
+		this.name = name;
+		this.project = new Project(projectID, "", "", "", "", 1);
+	}
+
+	public Block(int blockID, String name, Project project) {
+		this.blockID = blockID;
+		this.name = name;
+		this.project = project;
+	}
+
 	public int getBlockID() {
 		return blockID;
 	}
