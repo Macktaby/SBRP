@@ -6,6 +6,24 @@ public class User {
 	private String name;
 	private Project project;
 
+	public User() {
+		this.userID = 0;
+		this.name = "";
+		this.project = new Project();
+	}
+
+	public User(int userID, String name, int projectID) {
+		this.userID = userID;
+		this.name = name;
+		this.project = new Project(projectID, "", "", "", "", 1);
+	}
+
+	public User(int userID, String name, Project project) {
+		this.userID = userID;
+		this.name = name;
+		this.project = project;
+	}
+
 	public int getUserID() {
 		return userID;
 	}

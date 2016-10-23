@@ -1,27 +1,51 @@
 package com.services;
 
-import java.util.List;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.DAO.*;
+import com.models.*;
+
 @Path("/pm")
+@Produces(MediaType.TEXT_PLAIN)
 public class PMServices {
 
 	@POST
-	@Path("/addProduct")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String addProduct(@FormParam("name") String name, @FormParam("desc") String desc,
-			@FormParam("image") String image, @FormParam("quantity") int quantity, @FormParam("price") double price,
-			@FormParam("isDayProd") boolean isDayProduct, @FormParam("images") List<String> images,
-			@FormParam("catID") int categoryID, @FormParam("catName") String categoryName,
-			@FormParam("showroomID") int showroomID, @FormParam("showroomName") String showroomName,
-			@FormParam("brandID") int brandID, @FormParam("brandName") String brandName) {
+	@Path("/addUserToProject")
+	public String addProjectUser(@FormParam("name") String name, @FormParam("projectID") int projectID) {
 
-		return JSONBuilder.convertStateToJSON("").toJSONString();
+		User user = new User(0, name, projectID);
+
+		ProjectUserDAO dao = new ProjectUserDAO();
+		int id = dao.addUser(user);
+
+		return JSONBuilder.convertIDToJSON(id).toJSONString();
+	}
+
+	@POST
+	@Path("/updateUser")
+	public String updateUser(@FormParam("id") int id, @FormParam("name") String name,
+			@FormParam("projectID") int projectID) {
+
+		User user = new User(id, name, projectID);
+
+		ProjectUserDAO dao = new ProjectUserDAO();
+		String state = dao.updateUser(user);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
+	@POST
+	@Path("/deleteUser")
+	public String deletePackage(@FormParam("id") int id) {
+
+		ProjectUserDAO dao = new ProjectUserDAO();
+		String state = dao.deleteUser(id);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
 
 }
