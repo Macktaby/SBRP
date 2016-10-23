@@ -6,6 +6,24 @@ public class Attribute {
 	private String name;
 	private String value;
 
+	public Attribute() {
+		this.attributeID = 0;
+		this.name = "";
+		this.value = "";
+	}
+
+	public Attribute(int attributeID, String name) {
+		this.attributeID = attributeID;
+		this.name = name;
+		this.value = "";
+	}
+
+	public Attribute(int attributeID, String name, String value) {
+		this.attributeID = attributeID;
+		this.name = name;
+		this.value = value;
+	}
+
 	public int getAttributeID() {
 		return attributeID;
 	}

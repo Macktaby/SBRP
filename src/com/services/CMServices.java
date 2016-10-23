@@ -124,6 +124,40 @@ public class CMServices {
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
 
+	@POST
+	@Path("/addAttribute")
+	public String addAttrubute(@FormParam("name") String name) {
+
+		Attribute attribute = new Attribute(0, name);
+
+		AttributeDAO dao = new AttributeDAO();
+		int id = dao.addAttribute(attribute);
+
+		return JSONBuilder.convertIDToJSON(id).toJSONString();
+	}
+
+	@POST
+	@Path("/updateAttribute")
+	public String updateAttribute(@FormParam("id") int id, @FormParam("name") String name) {
+
+		Attribute attribute = new Attribute(id, name);
+
+		AttributeDAO dao = new AttributeDAO();
+		String state = dao.updateAttribute(attribute);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
+	@POST
+	@Path("/deleteAttribute")
+	public String deleteAttribute(@FormParam("id") int id) {
+
+		AttributeDAO dao = new AttributeDAO();
+		String state = dao.deleteAttribute(id);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
 	@GET
 	@Path("/")
 	public String getJSON() {
