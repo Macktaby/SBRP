@@ -83,4 +83,42 @@ public class PMServices {
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
 
+	@POST
+	@Path("/addTask")
+	public String addTask(@FormParam("name") String name, @FormParam("parentID") int parentID,
+			@FormParam("blockID") int blockID, @FormParam("userID") int userID, @FormParam("projectID") int projectID,
+			@FormParam("assigned_to") int assigned_to) {
+
+		Task task = new Task(0, name, blockID, userID, projectID, assigned_to, parentID);
+
+		TaskDAO dao = new TaskDAO();
+		int id = dao.addTask(task);
+
+		return JSONBuilder.convertIDToJSON(id).toJSONString();
+	}
+
+	@POST
+	@Path("/updateTask")
+	public String updateTask(@FormParam("id") int id, @FormParam("name") String name,
+			@FormParam("parentID") int parentID, @FormParam("blockID") int blockID, @FormParam("userID") int userID,
+			@FormParam("projectID") int projectID, @FormParam("assigned_to") int assigned_to) {
+
+		Task task = new Task(id, name, blockID, userID, projectID, assigned_to, parentID);
+
+		TaskDAO dao = new TaskDAO();
+		String state = dao.updateTask(task);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
+	@POST
+	@Path("/deleteTask")
+	public String deleteTask(@FormParam("id") int id) {
+
+		TaskDAO dao = new TaskDAO();
+		String state = dao.deleteTask(id);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
 }
