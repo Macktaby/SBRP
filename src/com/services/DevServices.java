@@ -1,7 +1,5 @@
 package com.services;
 
-import java.sql.Connection;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,28 +11,34 @@ import com.DAO.*;
 //import com.models.*;
 
 @Path("/dev")
+@Produces(MediaType.TEXT_PLAIN)
 public class DevServices {
 
 	@POST
-	@Path("/login")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String login(@FormParam("email") String email, @FormParam("pass") String pass) {
-		return "";
+	@Path("/fillAttributeValue")
+	public String fillAttributeValue(@FormParam("taskID") int taskID, @FormParam("attributeID") int attributeID,
+			@FormParam("value") String value, @FormParam("date") String date) {
+
+		TaskDAO dao = new TaskDAO();
+		String state = dao.addTaskAttributeValue(taskID, attributeID, date, value);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
 
-	/************************ For test ONLY ************************/
+	@POST
+	@Path("/updateAttributeValue")
+	public String update(@FormParam("taskID") int taskID, @FormParam("attributeID") int attributeID,
+			@FormParam("value") String value, @FormParam("date") String date) {
+
+		TaskDAO dao = new TaskDAO();
+		String state = dao.updateTaskAttributeValue(taskID, attributeID, date, value);
+
+		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
 
 	@GET
 	@Path("/")
-	@Produces(MediaType.TEXT_PLAIN)
 	public String getJson() {
-		Connection conn;
-		conn = DBConnection.getActiveConnection();
-	
-//		return conn.toString();
-
 		return "Hello after editing";
-		// Connection URL:
-		// mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/
 	}
 }

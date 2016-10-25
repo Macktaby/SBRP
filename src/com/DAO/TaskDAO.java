@@ -21,7 +21,6 @@ public class TaskDAO {
 	public int addTask(Task task) {
 
 		try {
-
 			String sql = "INSERT INTO `task` (`name`, `parent_id`, `block_id`, `user_id`, `assigned_to`) "
 					+ "VALUES ( ? , ? , ? , ? , ? );";
 
@@ -50,8 +49,7 @@ public class TaskDAO {
 
 		try {
 
-			String sql = "UPDATE `task` "
-					+ "SET `name`=?, `parent_id`=?, `block_id`=?, `user_id`=?, `assigned_to`=? "
+			String sql = "UPDATE `task` SET `name`=?, `parent_id`=?, `block_id`=?, `user_id`=?, `assigned_to`=? "
 					+ "WHERE `task_id`= ?";
 
 			PreparedStatement stmt;
@@ -90,6 +88,57 @@ public class TaskDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+
+		return "false";
+	}
+
+	public String addTaskAttributeValue(int taskID, int attributeID, String date, String value) {
+
+		try {
+			String sql = "INSERT INTO `task_attributes` (`task_id`, `attribute_id`, `date`, `value`) "
+					+ "VALUES ( ? , ? , ? , ? );";
+
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			stmt.setInt(1, taskID);
+			stmt.setInt(2, attributeID);
+			stmt.setString(3, date);
+			stmt.setString(4, value);
+
+			stmt.executeUpdate();
+			
+			return "true";
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.toString());
+		}
+		
+		return "false";
+	}
+
+	public String updateTaskAttributeValue(int taskID, int attributeID, String date, String value) {
+
+		try {
+			String sql = "UPDATE `task_attributes` SET `value`=?"
+					+ "WHERE `task_id`= ? AND `attribute_id`=? AND `date`=?";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, value);
+			stmt.setInt(2, taskID);
+			stmt.setInt(3, attributeID);
+			stmt.setString(4, date);
+
+			int nRows = stmt.executeUpdate();
+			if (nRows == 1)
+				return "true";
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.toString());
 		}
 
 		return "false";
