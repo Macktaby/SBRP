@@ -1,5 +1,7 @@
 package com.services;
 
+import java.util.ArrayList;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -52,6 +54,36 @@ public class CMServices {
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
 
+	@POST
+	@Path("/getPackages")
+	public String getParentPackages() {
+
+		PackageDAO dao = new PackageDAO();
+		ArrayList<Package> packages = dao.getParentPackages();
+
+		return JSONBuilder.convertPackagesToJSON(packages).toJSONString();
+	}
+	
+	@POST
+	@Path("/getSubPackages")
+	public String getSubPackages(@FormParam("id") int id) {
+
+		PackageDAO dao = new PackageDAO();
+		ArrayList<Package> packages = dao.getSubPackages(id);
+
+		return JSONBuilder.convertPackagesToJSON(packages).toJSONString();
+	}
+
+	@POST
+	@Path("/getPackage")
+	public String getPackage(@FormParam("id") int id) {
+
+		PackageDAO dao = new PackageDAO();
+		Package pkg = dao.getPackage(id);
+
+		return JSONBuilder.convertPackageToJSON(pkg).toJSONString();
+	}
+	
 	@POST
 	@Path("/addProject")
 	public String addProject(@FormParam("name") String name, @FormParam("tech_ref") String tech,

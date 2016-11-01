@@ -1,9 +1,12 @@
 package com.services;
 
+import java.util.ArrayList;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.models.*;
+import com.models.Package;
 
 public class JSONBuilder {
 
@@ -25,52 +28,40 @@ public class JSONBuilder {
 		return json;
 	}
 
-//	@SuppressWarnings("unchecked")
-//	public static JSONObject convertProductsToJSON(ArrayList<Product> products) {
-//
-//		JSONObject json = new JSONObject();
-//
-//		if (products == null) {
-//			json.put("state", "false");
-//		} else {
-//
-//			JSONArray jsonArr = new JSONArray();
-//			for (Product product : products)
-//				jsonArr.add(convertProductToJSON(product));
-//
-//			json.put("products", jsonArr);
-//		}
-//
-//		return json;
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	public static JSONObject convertProductToJSON(Product product) {
-//
-//		JSONObject json = new JSONObject();
-//
-//		if (product == null)
-//			json.put("state", "false");
-//		else {
-//			json.put("id", product.getProductID());
-//			json.put("name", product.getName());
-//			json.put("desc", product.getDescription());
-//			json.put("image", product.getImage());
-//			json.put("quantity", product.getQuantity());
-//			json.put("price", product.getPrice());
-//			json.put("avgRating", product.getRating());
-//			json.put("numRating", product.getNumRatingUsers());
-//			json.put("isDayProd", product.isDayProd());
-//
-//			json.put("catID", product.getCategoryID());
-//			json.put("showroomID", product.getShowRoomID());
-//			json.put("brandID", product.getBrandID());
-//			json.put("catName", product.getCategoryName());
-//			json.put("showroomName", product.getShowRoomName());
-//			json.put("brandName", product.getBrandName());
-//		}
-//
-//		return json;
-//	}
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertPackagesToJSON(ArrayList<Package> packages) {
+		JSONObject json = new JSONObject();
+
+		if (packages == null) {
+			json.put("state", "false");
+		} else {
+
+			JSONArray jsonArr = new JSONArray();
+			for (Package pkg : packages)
+				jsonArr.add(convertPackageToJSON(pkg));
+
+			json.put("products", jsonArr);
+		}
+
+		return json;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertPackageToJSON(Package pkg) {
+		JSONObject json = new JSONObject();
+
+		if (pkg == null)
+			json.put("state", "false");
+		else {
+			json.put("id", pkg.getPackageID());
+			json.put("name", pkg.getName());
+			json.put("tech_ref", pkg.getTechReflection());
+			json.put("mng_ref", pkg.getMngReflection());
+			json.put("bz_ref", pkg.getBzReflection());
+			json.put("parent_id", pkg.getParentID());
+		}
+
+		return json;
+	}
 
 }

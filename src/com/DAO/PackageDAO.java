@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.Statement;
 import com.models.Package;
@@ -16,6 +17,19 @@ public class PackageDAO {
 
 	public PackageDAO() {
 		conn = DBConnection.getActiveConnection();
+	}
+
+	private Package parsePackage() throws SQLException {
+		Package pkg = new Package();
+
+		pkg.setPackageID(rs.getInt("package_id"));
+		pkg.setName(rs.getString("name"));
+		pkg.setTechReflection(rs.getString("tech_ref"));
+		pkg.setBzReflection(rs.getString("bz_ref"));
+		pkg.setMngReflection(rs.getString("mng_ref"));
+		pkg.setParentID(rs.getInt("parent_id"));
+
+		return pkg;
 	}
 
 	public int addPackage(Package pkg) {
@@ -89,6 +103,73 @@ public class PackageDAO {
 		}
 
 		return "false";
+	}
+
+	public ArrayList<Package> getParentPackages() {
+
+		try {
+			String sql = "SELECT * FROM package WHERE parent_id = 1 AND NOT package_id = 1";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+
+			ArrayList<Package> packages = new ArrayList<Package>();
+
+			while (rs.next())
+				packages.add(parsePackage());
+
+			return packages;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public ArrayList<Package> getSubPackages(int id) {
+		try {
+			String sql = "SELECT * FROM package WHERE parent_id = ? NOT package_id = 1";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+
+			rs = stmt.executeQuery();
+
+			ArrayList<Package> packages = new ArrayList<Package>();
+
+			while (rs.next())
+				packages.add(parsePackage());
+
+			return packages;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public Package getPackage(int id) {
+		try {
+			String sql = "SELECT * FROM package WHERE parent_id = ? NOT package_id = 1";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+
+			rs = stmt.executeQuery();
+
+			while (rs.next())
+				return parsePackage();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }
