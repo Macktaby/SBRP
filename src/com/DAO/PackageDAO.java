@@ -154,7 +154,7 @@ public class PackageDAO {
 
 	public Package getPackage(int id) {
 		try {
-			String sql = "SELECT * FROM package WHERE parent_id = ? AND NOT package_id = 1";
+			String sql = "SELECT * FROM package WHERE package_id = ? AND NOT package_id = 1";
 
 			PreparedStatement stmt;
 			stmt = conn.prepareStatement(sql);
