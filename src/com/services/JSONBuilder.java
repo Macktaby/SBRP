@@ -40,7 +40,8 @@ public class JSONBuilder {
 			for (Package pkg : packages)
 				jsonArr.add(convertPackageToJSON(pkg));
 
-			json.put("products", jsonArr);
+			json.put("state", "true");
+			json.put("packages", jsonArr);
 		}
 
 		return json;
@@ -53,12 +54,51 @@ public class JSONBuilder {
 		if (pkg == null)
 			json.put("state", "false");
 		else {
+			json.put("state", "true");
 			json.put("id", pkg.getPackageID());
 			json.put("name", pkg.getName());
 			json.put("tech_ref", pkg.getTechReflection());
 			json.put("mng_ref", pkg.getMngReflection());
 			json.put("bz_ref", pkg.getBzReflection());
 			json.put("parent_id", pkg.getParentID());
+		}
+
+		return json;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertProjectsToJSON(ArrayList<Project> projects) {
+		JSONObject json = new JSONObject();
+
+		if (projects == null) {
+			json.put("state", "false");
+		} else {
+
+			JSONArray jsonArr = new JSONArray();
+			for (Project project : projects)
+				jsonArr.add(convertProjectToJSON(project));
+
+			json.put("state", "true");
+			json.put("projects", jsonArr);
+		}
+
+		return json;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertProjectToJSON(Project project) {
+		JSONObject json = new JSONObject();
+
+		if (project == null)
+			json.put("state", "false");
+		else {
+			json.put("state", "true");
+			json.put("id", project.getProjectID());
+			json.put("name", project.getName());
+			json.put("tech_ref", project.getTechReflection());
+			json.put("mng_ref", project.getMngReflection());
+			json.put("bz_ref", project.getBzReflection());
+			json.put("parent_id", project.getParentID());
 		}
 
 		return json;

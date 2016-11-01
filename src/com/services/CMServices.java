@@ -63,7 +63,7 @@ public class CMServices {
 
 		return JSONBuilder.convertPackagesToJSON(packages).toJSONString();
 	}
-	
+
 	@POST
 	@Path("/getSubPackages")
 	public String getSubPackages(@FormParam("id") int id) {
@@ -83,7 +83,7 @@ public class CMServices {
 
 		return JSONBuilder.convertPackageToJSON(pkg).toJSONString();
 	}
-	
+
 	@POST
 	@Path("/addProject")
 	public String addProject(@FormParam("name") String name, @FormParam("tech_ref") String tech,
@@ -119,6 +119,36 @@ public class CMServices {
 		String state = dao.deleteProject(id);
 
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
+	@POST
+	@Path("/getProjects")
+	public String getParentProjects() {
+
+		ProjectDAO dao = new ProjectDAO();
+		ArrayList<Project> projects = dao.getParentProjects();
+
+		return JSONBuilder.convertProjectsToJSON(projects).toJSONString();
+	}
+
+	@POST
+	@Path("/getSubProjects")
+	public String getSubProjects(@FormParam("id") int id) {
+
+		ProjectDAO dao = new ProjectDAO();
+		ArrayList<Project> projects = dao.getSubPackages(id);
+
+		return JSONBuilder.convertProjectsToJSON(projects).toJSONString();
+	}
+
+	@POST
+	@Path("/getProject")
+	public String getProject(@FormParam("id") int id) {
+
+		ProjectDAO dao = new ProjectDAO();
+		Project project = dao.getProject(id);
+
+		return JSONBuilder.convertProjectToJSON(project).toJSONString();
 	}
 
 	@POST
