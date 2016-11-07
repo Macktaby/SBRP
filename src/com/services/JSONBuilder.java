@@ -104,4 +104,39 @@ public class JSONBuilder {
 		return json;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertPersonsToJSON(ArrayList<Person> people) {
+		JSONObject json = new JSONObject();
+
+		if (people == null) {
+			json.put("state", "false");
+		} else {
+
+			JSONArray jsonArr = new JSONArray();
+			for (Person person : people)
+				jsonArr.add(convertPersonToJSON(person));
+
+			json.put("state", "true");
+			json.put("people", jsonArr);
+		}
+
+		return json;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertPersonToJSON(Person person) {
+		JSONObject json = new JSONObject();
+
+		if (person == null)
+			json.put("state", "false");
+		else {
+			json.put("state", "true");
+			json.put("id", person.getPersonID());
+			json.put("name", person.getName());
+			json.put("role", person.getRole());
+		}
+
+		return json;
+	}
+
 }

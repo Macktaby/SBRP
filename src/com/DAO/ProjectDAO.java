@@ -127,7 +127,7 @@ public class ProjectDAO {
 		return null;
 	}
 
-	public ArrayList<Project> getSubPackages(int id) {
+	public ArrayList<Project> getSubProjects(int id) {
 		try {
 			String sql = "SELECT * FROM project WHERE parent_id = ? AND NOT project_id = 1";
 

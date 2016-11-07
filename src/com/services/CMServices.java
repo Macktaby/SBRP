@@ -136,7 +136,7 @@ public class CMServices {
 	public String getSubProjects(@FormParam("id") int id) {
 
 		ProjectDAO dao = new ProjectDAO();
-		ArrayList<Project> projects = dao.getSubPackages(id);
+		ArrayList<Project> projects = dao.getSubProjects(id);
 
 		return JSONBuilder.convertProjectsToJSON(projects).toJSONString();
 	}
@@ -174,6 +174,26 @@ public class CMServices {
 		String state = dao.updatePerson(person);
 
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+	
+	@POST
+	@Path("/getPersons")
+	public String getPersons(){
+
+		PersonDAO dao = new PersonDAO();
+		ArrayList<Person> people = dao.getPeople();
+
+		return JSONBuilder.convertPersonsToJSON(people).toJSONString();		
+	}
+	
+	@POST
+	@Path("/getPerson")
+	public String getPersons(@FormParam("id") int id){
+
+		PersonDAO dao = new PersonDAO();
+		Person person = dao.getPerson(id);
+
+		return JSONBuilder.convertPersonToJSON(person).toJSONString();		
 	}
 
 	@POST
