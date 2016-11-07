@@ -173,4 +173,39 @@ public class JSONBuilder {
 		return json;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertUsersToJSON(ArrayList<User> users) {
+		JSONObject json = new JSONObject();
+
+		if (users == null) {
+			json.put("state", "false");
+		} else {
+
+			JSONArray jsonArr = new JSONArray();
+			for (User user : users)
+				jsonArr.add(convertUserToJSON(user));
+
+			json.put("state", "true");
+			json.put("users", jsonArr);
+		}
+
+		return json;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertUserToJSON(User user) {
+		JSONObject json = new JSONObject();
+
+		if (user == null)
+			json.put("state", "false");
+		else {
+			json.put("state", "true");
+			json.put("id", user.getUserID());
+			json.put("name", user.getName());
+			json.put("project", convertProjectToJSON(user.getProject()));
+		}
+
+		return json;
+	}
+
 }

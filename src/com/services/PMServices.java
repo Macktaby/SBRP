@@ -1,5 +1,7 @@
 package com.services;
 
+import java.util.ArrayList;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -46,6 +48,26 @@ public class PMServices {
 		String state = dao.deleteUser(id);
 
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
+	@POST
+	@Path("/getUsers")
+	public String getUsers(@FormParam("id") int projectID) {
+
+		ProjectUserDAO dao = new ProjectUserDAO();
+		ArrayList<User> users = dao.getProjectUsers(projectID);
+
+		return JSONBuilder.convertUsersToJSON(users).toJSONString();
+	}
+
+	@POST
+	@Path("/getUser")
+	public String getUser(@FormParam("id") int userID) {
+
+		ProjectUserDAO dao = new ProjectUserDAO();
+		User user = dao.getUserByID(userID);
+
+		return JSONBuilder.convertUserToJSON(user).toJSONString();
 	}
 
 	@POST

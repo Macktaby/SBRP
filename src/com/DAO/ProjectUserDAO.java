@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.Statement;
 import com.models.*;
@@ -16,6 +17,38 @@ public class ProjectUserDAO {
 
 	public ProjectUserDAO() {
 		conn = DBConnection.getActiveConnection();
+	}
+
+	private User parseUser() throws SQLException {
+		User user = new User();
+
+		user.setUserID(rs.getInt("user_id"));
+		user.setName(rs.getString("name"));
+
+		return user;
+	}
+
+	private Project parseProject() throws SQLException {
+		Project project = new Project();
+
+		project.setProjectID(rs.getInt("project_id"));
+		project.setName(rs.getString("name"));
+		project.setTechReflection(rs.getString("tech_ref"));
+		project.setBzReflection(rs.getString("bz_ref"));
+		project.setMngReflection(rs.getString("mng_ref"));
+		project.setParentID(rs.getInt("parent_id"));
+
+		return project;
+	}
+
+	private User parseUserAndProject() throws SQLException {
+		User user = new User();
+
+		user.setUserID(rs.getInt("user_id"));
+		user.setName(rs.getString("name"));
+		user.setProject(parseProject());
+
+		return user;
 	}
 
 	public int addUser(User user) {
@@ -82,6 +115,50 @@ public class ProjectUserDAO {
 		}
 
 		return "false";
+	}
+
+	public ArrayList<User> getProjectUsers(int projectID) {
+		try {
+			String sql = "SELECT * FROM user where project_id = ?";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, projectID);
+
+			rs = stmt.executeQuery();
+
+			ArrayList<User> users = new ArrayList<User>();
+
+			while (rs.next())
+				users.add(parseUser());
+
+			return users;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public User getUserByID(int userID) {
+		try {
+			String sql = "SELECT * FROM user, project WHERE user_id = ? AND user.project_id = project.project_id";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, userID);
+
+			rs = stmt.executeQuery();
+
+			if (rs.next())
+				return (parseUserAndProject());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }
