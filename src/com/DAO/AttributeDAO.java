@@ -127,7 +127,7 @@ public class AttributeDAO {
 
 			rs = stmt.executeQuery();
 
-			while (rs.next())
+			if (rs.next())
 				return (parseAttribute());
 
 		} catch (SQLException e) {
