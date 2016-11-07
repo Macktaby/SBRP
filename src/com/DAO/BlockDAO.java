@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.Statement;
 import com.models.*;
@@ -16,6 +17,38 @@ public class BlockDAO {
 
 	public BlockDAO() {
 		conn = DBConnection.getActiveConnection();
+	}
+
+	private Block parseBlock() throws SQLException {
+		Block block = new Block();
+
+		block.setBlockID(rs.getInt("block_id"));
+		block.setName(rs.getString("name"));
+
+		return block;
+	}
+
+	private Block parseBlockAndProject() throws SQLException {
+		Block block = new Block();
+
+		block.setBlockID(rs.getInt("block_id"));
+		block.setName(rs.getString("name"));
+		block.setProject(parseProject());
+
+		return block;
+	}
+
+	private Project parseProject() throws SQLException {
+		Project project = new Project();
+
+		project.setProjectID(rs.getInt("project_id"));
+		project.setName(rs.getString("name"));
+		project.setTechReflection(rs.getString("tech_ref"));
+		project.setBzReflection(rs.getString("bz_ref"));
+		project.setMngReflection(rs.getString("mng_ref"));
+		project.setParentID(rs.getInt("parent_id"));
+
+		return project;
 	}
 
 	public int addBlock(Block block) {
@@ -82,6 +115,50 @@ public class BlockDAO {
 		}
 
 		return "false";
+	}
+
+	public ArrayList<Block> getProjectBlocks(int projectID) {
+		try {
+			String sql = "SELECT * FROM block where project_id = ?";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, projectID);
+
+			rs = stmt.executeQuery();
+
+			ArrayList<Block> blocks = new ArrayList<Block>();
+
+			while (rs.next())
+				blocks.add(parseBlock());
+
+			return blocks;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public Block getBlockByID(int blockID) {
+		try {
+			String sql = "SELECT * FROM block, project WHERE block_id = ? AND block.project_id = project.project_id";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, blockID);
+
+			rs = stmt.executeQuery();
+
+			if (rs.next())
+				return (parseBlockAndProject());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }

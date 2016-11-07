@@ -208,4 +208,39 @@ public class JSONBuilder {
 		return json;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertBlocksToJSON(ArrayList<Block> blocks) {
+		JSONObject json = new JSONObject();
+
+		if (blocks == null) {
+			json.put("state", "false");
+		} else {
+
+			JSONArray jsonArr = new JSONArray();
+			for (Block block : blocks)
+				jsonArr.add(convertBlockToJSON(block));
+
+			json.put("state", "true");
+			json.put("blocks", jsonArr);
+		}
+
+		return json;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertBlockToJSON(Block block) {
+		JSONObject json = new JSONObject();
+
+		if (block == null)
+			json.put("state", "false");
+		else {
+			json.put("state", "true");
+			json.put("id", block.getBlockID());
+			json.put("name", block.getName());
+			json.put("project", convertProjectToJSON(block.getProject()));
+		}
+
+		return json;
+	}
+
 }

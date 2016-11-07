@@ -104,6 +104,25 @@ public class PMServices {
 
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
+	@POST
+	@Path("/getBlocks")
+	public String getBlocks(@FormParam("id") int projectID) {
+
+		BlockDAO dao = new BlockDAO();
+		ArrayList<Block> blocks = dao.getProjectBlocks(projectID);
+
+		return JSONBuilder.convertBlocksToJSON(blocks).toJSONString();
+	}
+
+	@POST
+	@Path("/getBlock")
+	public String getBlock(@FormParam("id") int blockID) {
+
+		BlockDAO dao = new BlockDAO();
+		Block block = dao.getBlockByID(blockID);
+
+		return JSONBuilder.convertBlockToJSON(block).toJSONString();
+	}
 
 	@POST
 	@Path("/addTask")
