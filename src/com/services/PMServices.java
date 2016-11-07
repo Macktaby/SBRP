@@ -104,6 +104,7 @@ public class PMServices {
 
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
+
 	@POST
 	@Path("/getBlocks")
 	public String getBlocks(@FormParam("id") int projectID) {
@@ -160,6 +161,16 @@ public class PMServices {
 		String state = dao.deleteTask(id);
 
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
+	}
+
+	@POST
+	@Path("/getSubTasks")
+	public String getSubTasks(@FormParam("id") int id) {
+
+		TaskDAO dao = new TaskDAO();
+		ArrayList<Task> tasks = dao.getSubTasks(id);
+
+		return JSONBuilder.convertTasksToJSON(tasks).toJSONString();
 	}
 
 }

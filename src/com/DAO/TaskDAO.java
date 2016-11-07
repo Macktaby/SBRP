@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.Statement;
 import com.models.*;
@@ -16,6 +17,49 @@ public class TaskDAO {
 
 	public TaskDAO() {
 		conn = DBConnection.getActiveConnection();
+	}
+
+	private Task parseTask() throws SQLException {
+		Task task = new Task();
+
+		task.setTaskID(rs.getInt("task_id"));
+		task.setName(rs.getString("task.name"));
+		task.setParentID(rs.getInt("task.parent_id"));
+		task.setDevComment(rs.getString("dev_comment"));
+
+		task.setBlock(parseBlock());
+		task.setAssignedTo(parsePerson());
+		task.setUser(parseUser());
+
+		return task;
+	}
+
+	private Block parseBlock() throws SQLException {
+		Block block = new Block();
+
+		block.setBlockID(rs.getInt("block.block_id"));
+		block.setName(rs.getString("block.name"));
+
+		return block;
+	}
+
+	private User parseUser() throws SQLException {
+		User user = new User();
+
+		user.setUserID(rs.getInt("user.user_id"));
+		user.setName(rs.getString("user.name"));
+
+		return user;
+	}
+
+	private Person parsePerson() throws SQLException {
+		Person person = new Person();
+
+		person.setPersonID(rs.getInt("people.person_id"));
+		person.setName(rs.getString("people.name"));
+		person.setRole(rs.getString("people.role"));
+
+		return person;
 	}
 
 	public int addTask(Task task) {
@@ -107,14 +151,14 @@ public class TaskDAO {
 			stmt.setString(4, value);
 
 			stmt.executeUpdate();
-			
+
 			return "true";
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.toString());
 		}
-		
+
 		return "false";
 	}
 
@@ -142,6 +186,33 @@ public class TaskDAO {
 		}
 
 		return "false";
+	}
+
+	public ArrayList<Task> getSubTasks(int id) {
+
+		try {
+			String sql = "SELECT * FROM task, block, user, people " + "WHERE parent_id = ? "
+					+ "AND block.block_id = task.block_id " + "AND user.user_id = task.user_id "
+					+ "AND people.person_id = task.assigned_to " + "AND NOT task_id = 1";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+
+			rs = stmt.executeQuery();
+
+			ArrayList<Task> tasks = new ArrayList<Task>();
+
+			while (rs.next())
+				tasks.add(parseTask());
+
+			return tasks;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }

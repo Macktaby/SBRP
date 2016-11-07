@@ -243,4 +243,43 @@ public class JSONBuilder {
 		return json;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertTasksToJSON(ArrayList<Task> tasks) {
+		JSONObject json = new JSONObject();
+
+		if (tasks == null) {
+			json.put("state", "false");
+		} else {
+
+			JSONArray jsonArr = new JSONArray();
+			for (Task task : tasks)
+				jsonArr.add(convertTaskToJSON(task));
+
+			json.put("state", "true");
+			json.put("tasks", jsonArr);
+		}
+
+		return json;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static JSONObject convertTaskToJSON(Task task) {
+		JSONObject json = new JSONObject();
+
+		if (task == null)
+			json.put("state", "false");
+		else {
+			json.put("state", "true");
+			json.put("id", task.getTaskID());
+			json.put("name", task.getName());
+			json.put("parent_id", task.getParentID());
+			json.put("dev_comment", task.getDevComment());
+			json.put("block", convertBlockToJSON(task.getBlock()));
+			json.put("person", convertPersonToJSON(task.getAssignedTo()));
+			json.put("user", convertUserToJSON(task.getUser()));
+		}
+
+		return json;
+	}
+
 }
