@@ -139,4 +139,38 @@ public class JSONBuilder {
 		return json;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertAttributesToJSON(ArrayList<Attribute> attributes) {
+		JSONObject json = new JSONObject();
+
+		if (attributes == null) {
+			json.put("state", "false");
+		} else {
+
+			JSONArray jsonArr = new JSONArray();
+			for (Attribute attribute : attributes)
+				jsonArr.add(convertAttributeToJSON(attribute));
+
+			json.put("state", "true");
+			json.put("attributes", jsonArr);
+		}
+
+		return json;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static JSONObject convertAttributeToJSON(Attribute attribute) {
+		JSONObject json = new JSONObject();
+
+		if (attribute == null)
+			json.put("state", "false");
+		else {
+			json.put("state", "true");
+			json.put("id", attribute.getAttributeID());
+			json.put("name", attribute.getName());
+		}
+
+		return json;
+	}
+
 }

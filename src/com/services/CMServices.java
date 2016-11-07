@@ -239,6 +239,27 @@ public class CMServices {
 
 		return JSONBuilder.convertStateToJSON(state).toJSONString();
 	}
+	
+	@POST
+	@Path("/getAttributes")
+	public String getAttributes(){
+
+		AttributeDAO dao = new AttributeDAO();
+		ArrayList<Attribute> attributes = dao.getAttributes();
+
+		return JSONBuilder.convertAttributesToJSON(attributes).toJSONString();		
+	}
+	
+	@POST
+	@Path("/getAttribute")
+	public String getAttribute(@FormParam("id") int id){
+
+		AttributeDAO dao = new AttributeDAO();
+		Attribute attribute = dao.getAttribute(id);
+
+		return JSONBuilder.convertAttributeToJSON(attribute).toJSONString();		
+	}
+	
 
 	@GET
 	@Path("/")

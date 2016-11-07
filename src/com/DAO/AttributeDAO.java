@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.Statement;
 import com.models.*;
@@ -16,6 +17,15 @@ public class AttributeDAO {
 
 	public AttributeDAO() {
 		conn = DBConnection.getActiveConnection();
+	}
+
+	private Attribute parseAttribute() throws SQLException {
+		Attribute attribute = new Attribute();
+
+		attribute.setAttributeID(rs.getInt("attribute_id"));
+		attribute.setName(rs.getString("name"));
+
+		return attribute;
 	}
 
 	public int addAttribute(Attribute attribute) {
@@ -80,6 +90,51 @@ public class AttributeDAO {
 		}
 
 		return "false";
+	}
+
+	public ArrayList<Attribute> getAttributes() {
+
+		try {
+			String sql = "SELECT * FROM attribute";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+
+			rs = stmt.executeQuery();
+
+			ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+
+			while (rs.next())
+				attributes.add(parseAttribute());
+
+			return attributes;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public Attribute getAttribute(int id) {
+
+		try {
+			String sql = "SELECT * FROM attribute where attribute_id = ?";
+
+			PreparedStatement stmt;
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+
+			rs = stmt.executeQuery();
+
+			while (rs.next())
+				return (parseAttribute());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }
