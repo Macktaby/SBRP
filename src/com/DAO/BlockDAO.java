@@ -23,7 +23,7 @@ public class BlockDAO {
 		Block block = new Block();
 
 		block.setBlockID(rs.getInt("block_id"));
-		block.setName(rs.getString("name"));
+		block.setName(rs.getString("block.name"));
 
 		return block;
 	}
@@ -32,7 +32,7 @@ public class BlockDAO {
 		Block block = new Block();
 
 		block.setBlockID(rs.getInt("block_id"));
-		block.setName(rs.getString("name"));
+		block.setName(rs.getString("project.name"));
 		block.setProject(parseProject());
 
 		return block;

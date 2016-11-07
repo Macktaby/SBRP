@@ -23,7 +23,7 @@ public class ProjectUserDAO {
 		User user = new User();
 
 		user.setUserID(rs.getInt("user_id"));
-		user.setName(rs.getString("name"));
+		user.setName(rs.getString("user.name"));
 
 		return user;
 	}
@@ -32,7 +32,7 @@ public class ProjectUserDAO {
 		Project project = new Project();
 
 		project.setProjectID(rs.getInt("project_id"));
-		project.setName(rs.getString("name"));
+		project.setName(rs.getString("project.name"));
 		project.setTechReflection(rs.getString("tech_ref"));
 		project.setBzReflection(rs.getString("bz_ref"));
 		project.setMngReflection(rs.getString("mng_ref"));
